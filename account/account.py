@@ -21,25 +21,28 @@
 #
 ##############################################################################
 
-{
-	'name': 'Modulo per la gestione del recupero dei buchi dei protocolli fiscali',
-	'version': '1.0',
-	'category': 'Sequences',
-	'description': 
-		"""
-		[ENG] Is useful for sequences recovery eg from a deleted invoice. 
-		[ITA] Modulo per la gestione del recupero dei buchi delle sequence (DDT, Fatture, etc.)
-		È sufficente ereditare l'unlink di una classe con sequence per ottenere la funzionalità di ripristino
-		""",
-	'author': 'www.andreacometa.it',
-	'website': 'http://www.andreacometa.it',
-	'license': 'AGPL-3',
-	"active": False,
-	"installable": True,
-	"depends" : ['base','account','stock',],
-	"update_xml" : [
-		'base/sequence_view.xml',
-		'security/recupero_protocolli_security.xml',
-		'security/ir.model.access.csv',
-		],
-}
+from osv import fields, osv
+
+
+class account_invoice(osv.osv):
+    _name = "account.invoice"
+    _inherit = "account.invoice"
+
+    def unlink(self, cr, uid, ids, context=None):
+        # --- Cicla gli indici per scrivere nella tabella di recupero protocolli
+        for account_id in ids:
+            protocollo_obj = self.browse(cr, uid, account_id)
+            # print '============', protocollo_obj.internal_number
+            protocollo = protocollo_obj.internal_number
+            sequence_id = protocollo_obj.journal_id.sequence_id.id
+            if protocollo:
+                data = self.browse(cr, uid, account_id).date_invoice
+                self.pool['ir.protocolli_da_recuperare'].create(
+                    cr, uid, {
+                        'name': ' account.journal',
+                        'protocollo': protocollo,
+                        'data': data,
+                        'sequence_id': sequence_id, })
+        return super(account_invoice, self).unlink(cr, uid, ids, context=None)
+
+account_invoice()

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp><data>
+
+    <record id="group_recupero_protocolli" model="res.groups">
+        <field name="name">Recupero Protocolli/User</field>
+    </record>
+    
+</data></openerp>

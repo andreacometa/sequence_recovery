@@ -21,25 +21,4 @@
 #
 ##############################################################################
 
-{
-	'name': 'Modulo per la gestione del recupero dei buchi dei protocolli fiscali',
-	'version': '1.0',
-	'category': 'Sequences',
-	'description': 
-		"""
-		[ENG] Is useful for sequences recovery eg from a deleted invoice. 
-		[ITA] Modulo per la gestione del recupero dei buchi delle sequence (DDT, Fatture, etc.)
-		È sufficente ereditare l'unlink di una classe con sequence per ottenere la funzionalità di ripristino
-		""",
-	'author': 'www.andreacometa.it',
-	'website': 'http://www.andreacometa.it',
-	'license': 'AGPL-3',
-	"active": False,
-	"installable": True,
-	"depends" : ['base','account','stock',],
-	"update_xml" : [
-		'base/sequence_view.xml',
-		'security/recupero_protocolli_security.xml',
-		'security/ir.model.access.csv',
-		],
-}
+import account

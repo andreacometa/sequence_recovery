@@ -21,25 +21,22 @@
 #
 ##############################################################################
 
-{
-	'name': 'Modulo per la gestione del recupero dei buchi dei protocolli fiscali',
-	'version': '1.0',
-	'category': 'Sequences',
-	'description': 
-		"""
-		[ENG] Is useful for sequences recovery eg from a deleted invoice. 
-		[ITA] Modulo per la gestione del recupero dei buchi delle sequence (DDT, Fatture, etc.)
-		È sufficente ereditare l'unlink di una classe con sequence per ottenere la funzionalità di ripristino
-		""",
-	'author': 'www.andreacometa.it',
-	'website': 'http://www.andreacometa.it',
-	'license': 'AGPL-3',
-	"active": False,
-	"installable": True,
-	"depends" : ['base','account','stock',],
-	"update_xml" : [
-		'base/sequence_view.xml',
-		'security/recupero_protocolli_security.xml',
-		'security/ir.model.access.csv',
-		],
-}
+from osv import fields, osv
+
+
+class stock_picking(osv.osv):
+
+	_name = "stock.picking"
+	_inherit = "stock.picking"
+
+	def unlink(self, cr, uid, ids, context=None):
+		# ----- Cicla gli indici per scrivere nella tabella di recupero protocolli
+		for stock_id in ids:
+			protocollo = self.browse(cr, uid, stock_id).ddt_number
+			if protocollo:
+				data = self.browse(cr, uid, stock_id).date
+				self.pool.get('ir.protocolli_da_recuperare').create(cr, uid,
+					{'name':'stock.ddt', 'protocollo':protocollo, 'data':data})
+		return super(stock_picking, self).unlink(cr, uid, ids, context=None)
+
+stock_picking()

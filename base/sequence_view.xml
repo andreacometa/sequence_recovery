@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <record id="sequence_recovery_tree_view" model="ir.ui.view">
-            <field name="name">ir.sequence_recovery.tree</field>
-            <field name="model">ir.sequence_recovery</field>
-            <field name="type">form</field>
+        <!-- View con i protocolli recuperati -->
+
+        <record id="recupero_protocolli_tree_view" model="ir.ui.view">
+            <field name="name">ir.protocolli_da_recuperare.tree</field>
+            <field name="model">ir.protocolli_da_recuperare</field>
+            <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Sequence Recovery" editable="top">
+                <tree string="Protocolli da recuperare" editable="top">
                     <field name="name"/>
                     <field name="sequence_id" />
-                    <field name="sequence"/>
-                    <field name="date"/>
+                    <field name="protocollo"/>
+                    <field name="data"/>
                 </tree>
             </field>
         </record>
 
-        <record id="sequence_recovery_search" model="ir.ui.view">
-            <field name="name">ir.sequence_recovery.search</field>
-            <field name="model">ir.sequence_recovery</field>
+        <record id="recupero_protocolli_search" model="ir.ui.view">
+            <field name="name">ir.protocolli_da_recuperare.search</field>
+            <field name="model">ir.protocolli_da_recuperare</field>
             <field name="type">search</field>
             <field name="arch" type="xml">
-                <search string="Sequence Recovery">
+                <search string="Protocolli da recuperare">
                     <field name="name" select="1"/>
                     <field name="sequence_id" select="1"/>
-                    <field name="sequence" select="1"/>
-                    <field name="date" select="1"/>
+                    <field name="protocollo" select="1"/>
+                    <field name="data" select="1"/>
                 </search>
             </field>
         </record>
 
-        <record id="action_sequence_recovery" model="ir.actions.act_window">
-            <field name="name">Sequence Recovery</field>
+        <record id="action_recupero_protocolli" model="ir.actions.act_window">
+            <field name="name">Recupero Protocolli</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">ir.sequence_recovery</field>
+            <field name="res_model">ir.protocolli_da_recuperare</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="sequence_recovery_tree_view"/>
-            <field name="search_view_id" ref="sequence_recovery_search"/>
+            <field name="view_id" ref="recupero_protocolli_tree_view"/>
+            <field name="search_view_id" ref="recupero_protocolli_search"/>
             <field name="context">{}</field>
         </record>
 
-        <menuitem string="Sequence Recovery" action="action_sequence_recovery" id="menu_sequence_recovery" parent="base.next_id_5"/>
+        <menuitem action="action_recupero_protocolli" id="menu_recupero_protocolli"
+            string="Recupero Protocolli" parent="base.next_id_5"/>
     </data>
 </openerp>
